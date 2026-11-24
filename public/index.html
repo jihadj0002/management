@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A central agency dashboard for clients, tasks, content, analytics, leads and reports, powered by Firebase.">
+  <meta name="theme-color" content="#070b14">
+  <title>Management · Workspace</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%236366f1'/%3E%3Cpath d='M9 22V11l7 5 7-5v11' fill='none' stroke='%2306101f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    (function () {
+      window.setTimeout(function () {
+        if (window.__appBooted) return;
+        var boot = document.getElementById("loadingScreen");
+        if (!boot || boot.classList.contains("hidden")) return;
+        var spinner = boot.querySelector(".spinner");
+        if (spinner) spinner.classList.add("hidden");
+        var message = boot.querySelector("p");
+        if (!message) return;
+        message.classList.add("boot-error");
+        message.textContent = location.protocol === "file:"
+          ? "Open this app through a local server, not by double-clicking the file. Run: python3 -m http.server 8124 --directory public"
+          : "The app could not start. Open the browser console for details, then reload.";
+      }, 8000);
+    })();
+  </script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div id="loadingScreen" class="boot">
+    <div class="boot-inner">
+      <span class="brand-mark brand-mark-lg" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 17V8l6 4.5L18 8v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="spinner" aria-hidden="true"></span>
+      <p>Connecting to Firebase…</p>
+    </div>
+  </div>
+
+  <section id="setupScreen" class="setup hidden">
+    <div class="setup-card">
+      <span class="brand-mark brand-mark-lg" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 17V8l6 4.5L18 8v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <p class="eyebrow">Project management-34724</p>
+      <h1>Finish connecting Firebase</h1>
+      <p class="setup-lead">The dashboard is built, but it still needs the web app credentials from your Firebase project. This takes about two minutes.</p>
+      <ol class="setup-steps">
+        <li>
+          <span class="step-index">1</span>
+          <div>
+            <h2>Register a web app</h2>
+            <p>Open <a href="https://console.firebase.google.com/project/management-34724/settings/general" target="_blank" rel="noreferrer">Project settings → Your apps</a>, click the <strong>Web</strong> icon, nickname it <code>management-dashboard</code>, and copy the <code>firebaseConfig</code> values.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-index">2</span>
+          <div>
+            <h2>Paste the config</h2>
+            <p>Replace the placeholders in <code>public/firebase-config.js</code> with your <code>apiKey</code>, <code>messagingSenderId</code>, and <code>appId</code>.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-index">3</span>
+          <div>
+            <h2>Enable Email/password</h2>
+            <p>In <a href="https://console.firebase.google.com/project/management-34724/authentication/providers" target="_blank" rel="noreferrer">Authentication → Sign-in method</a>, enable the <strong>Email/Password</strong> provider.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-index">4</span>
+          <div>
+            <h2>Create Firestore and deploy rules</h2>
+            <p>Create a Firestore database, then deploy the included security rules with <code>npx firebase-tools deploy --only firestore:rules</code>.</p>
+          </div>
+        </li>
+      </ol>
+      <button id="reloadSetup" class="btn btn-primary" type="button">Reload after updating config</button>
+      <p class="fineprint">Your API key is safe to ship. Access is controlled by the Firestore security rules in <code>firestore.rules</code>.</p>
+    </div>
+  </section>
+
+  <section id="authScreen" class="auth hidden">
+    <div class="auth-hero">
+      <div class="hero-copy">
+        <p class="badge">Firebase powered</p>
+        <h1>Run the whole studio from <span class="grad-text">one calm dashboard.</span></h1>
+        <p class="hero-lead">Clients, tasks, content, analytics, leads and reports — connected, private and synced in realtime.</p>
+        <ul class="hero-points">
+          <li><span class="point-icon" aria-hidden="true"></span>Email and password authentication</li>
+          <li><span class="point-icon" aria-hidden="true"></span>Firestore data synced in realtime</li>
+          <li><span class="point-icon" aria-hidden="true"></span>Every account sees only its own workspace</li>
+        </ul>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <div class="mock-card">
+          <div class="mock-top">
+            <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+            <span class="mock-tag">Realtime</span>
+          </div>
+          <div class="mock-stats">
+            <div class="mock-stat"><span>Clients</span><strong>8</strong></div>
+            <div class="mock-stat"><span>Open</span><strong>24</strong></div>
+            <div class="mock-stat"><span>Pipeline</span><strong>$18k</strong></div>
+          </div>
+          <div class="mock-bars">
+            <span style="--h:36%"></span><span style="--h:52%"></span><span style="--h:44%"></span><span style="--h:68%"></span><span style="--h:58%"></span><span style="--h:82%"></span><span style="--h:74%"></span><span style="--h:96%"></span>
+          </div>
+          <div class="mock-rows">
+            <div class="mock-row"><span class="mock-check is-on"></span><span class="mock-line is-short"></span></div>
+            <div class="mock-row"><span class="mock-check"></span><span class="mock-line"></span></div>
+            <div class="mock-row"><span class="mock-check"></span><span class="mock-line is-mid"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-card">
+        <div class="tabs" role="tablist" aria-label="Authentication mode">
+          <button type="button" class="tab is-active" data-mode="signin" role="tab" aria-selected="true">Sign in</button>
+          <button type="button" class="tab" data-mode="signup" role="tab" aria-selected="false">Create account</button>
+        </div>
+        <h2 id="authTitle">Welcome back</h2>
+        <p id="authSubtitle" class="auth-sub">Sign in to open your workspace.</p>
+        <form id="authForm" novalidate>
+          <label class="field">
+            <span>Email</span>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" required>
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required>
+          </label>
+          <div id="authError" class="alert hidden" role="alert"></div>
+          <button id="authSubmit" class="btn btn-primary btn-block" type="submit">Sign in</button>
+          <button id="forgotPassword" class="link-btn" type="button">Forgot password?</button>
+        </form>
+        <p class="fineprint">Protected by Firebase Authentication. All records live under your own Firestore document tree.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="dashboard" class="app hidden">
+    <div id="sidebarScrim" class="scrim" aria-hidden="true"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <a class="brand" href="#/overview">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 17V8l6 4.5L18 8v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-text">Management</span>
+      </a>
+
+      <nav class="nav" aria-label="Workspace navigation">
+        <p class="nav-label">Workspace</p>
+        <a class="nav-link" href="#/overview" data-route="overview">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <span>Overview</span>
+        </a>
+
+        <p class="nav-label">Manage</p>
+        <a class="nav-link" href="#/clients" data-route="clients">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 11a3.2 3.2 0 1 0 0-6.4A3.2 3.2 0 0 0 10 11Zm6.5-5.7a3.2 3.2 0 0 1 0 6.1M17 14.2a3.5 3.5 0 0 1 3 3.4V19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Clients</span>
+        </a>
+        <a class="nav-link" href="#/tasks" data-route="tasks">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6l1.2 1.2L7.5 4.8M4 12l1.2 1.2 2.3-2.4M4 18l1.2 1.2 2.3-2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Tasks</span>
+          <span class="nav-badge hidden" data-badge="tasks"></span>
+        </a>
+        <a class="nav-link" href="#/content" data-route="content">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Zm0 3h16M8 3v4M16 3v4M8 14h2M14 14h2M8 17.5h2M14 17.5h2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Content calendar</span>
+        </a>
+
+        <p class="nav-label">Performance</p>
+        <a class="nav-link" href="#/analytics" data-route="analytics">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5M4 20h16M8 17v-5M12.5 17V8M17 17v-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-link" href="#/leads" data-route="leads">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16.5 9 11l3.5 3.5L20 7M20 7h-5m5 0v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Leads &amp; sales</span>
+          <span class="nav-badge hidden" data-badge="leads"></span>
+        </a>
+        <a class="nav-link" href="#/reports" data-route="reports">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm7 0v5h5M9 12h6M9 16h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Reports</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="user-card">
+          <span id="userAvatar" class="avatar" aria-hidden="true">M</span>
+          <div class="user-card-meta">
+            <span id="userEmail" class="user-card-email"></span>
+            <span class="user-role">Workspace owner</span>
+          </div>
+          <button id="signOutBtn" class="icon-btn icon-sm" type="button" title="Sign out" aria-label="Sign out">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2M10 12h10m0 0-3-3m3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <p class="sidebar-note">Private Firebase workspace</p>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="Open navigation">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="title-block">
+          <p id="pageEyebrow" class="eyebrow">Workspace</p>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="topbar-right">
+          <span id="todayChip" class="today-chip"></span>
+        </div>
+      </header>
+
+      <main id="view" class="view"></main>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+</body>
+</html>
